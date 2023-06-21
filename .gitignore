@@ -1,0 +1,6 @@
+/report
+*.csv
+*.pdf
+*.png
+*.txt
+/data
