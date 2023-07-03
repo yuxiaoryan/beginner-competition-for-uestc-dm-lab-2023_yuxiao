@@ -13,12 +13,15 @@ if __name__ == "__main__":
     acc_history["mean"] = acc_history.apply(
         lambda x: np.array([x[col] for col in acc_cols[1:]]).mean(), axis=1
     )
+    acc_history["std"] = acc_history.apply(
+        lambda x: np.array([x[col] for col in acc_cols[1:]]).std(), axis=1
+    )
     loss_history = pd.read_csv("loss_history.csv")
     loss_cols = list(loss_history.columns)
     loss_history["mean"] = loss_history.apply(
         lambda x: np.array([x[col] for col in loss_cols[1:]]).mean(), axis=1
     )
-    print(loss_history["mean"])
+    print(acc_history[["mean", "std"]])
     for k in kpi.keys():
         fig1, ax1 = plt.subplots()
         fig1.set_figheight(10)
