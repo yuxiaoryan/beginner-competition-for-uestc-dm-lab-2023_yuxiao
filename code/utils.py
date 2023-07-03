@@ -1,3 +1,53 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+import numpy as np
+
+
+def mean_and_std(ll):
+    a = np.array(ll)
+    return a.mean(), a.std()
+
+
+def data_to_csv(data, cols, path):
+    df = pd.DataFrame(data)
+    df = df.reset_index()
+    df.columns = cols
+    df[cols[0]] = df[cols[0]] + 1
+    df.to_csv(path, index=False)
+
+
+def get_X_y_test():
+    ori_data = pd.read_csv("../data/recipes_test.csv")
+    x_test = ori_data.drop(columns=["id"]).values
+    return np.array(x_test)
+
+
+def int_map_2_str(int_list, mapping: dict):
+    str_list = []
+    for num in int_list:
+        for k in mapping.keys():
+            if mapping[k] == num:
+                str_list.append(k)
+    return str_list
+
+
+def str_map_2_int(str_list, mapping: dict):
+    int_list = []
+    for str in str_list:
+        int_list.append(mapping[str])
+    return int_list
+
+
+def get_X_y(test_size=0.3, random_state=1):
+    ori_data = pd.read_csv("../data/recipes_train.csv")
+    train_x = ori_data.drop(columns=["cuisine", "id"]).values
+    train_y = ori_data["cuisine"].values
+    X_train, X_valid, y_train, y_valid = train_test_split(
+        train_x, train_y, test_size=test_size, random_state=random_state
+    )
+    return X_train, X_valid, y_train, y_valid
+
+
 def link_list(list_array: list[list]):
     new_list = []
     for ll in list_array:
@@ -119,7 +169,3 @@ def extract_tree_from_dot(ori_data: str):
     deep_first_search(0, "")
     # print(tree_path_list)
     return tree_path_list
-
-
-a = "0,"
-print(a.split(","))
